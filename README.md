@@ -13,6 +13,10 @@ Both scripts do two things:
 
 To download and use, you can clone this repo and run the task on demand, or on a cron job or task scheduler if you're on Windows.
 
+### Demo
+
+![anime-mover](https://raw.githubusercontent.com/joeypoyiwu/anime-video-file-renamer-and-mover/feat/refactor-newAnimeEpisodes/img/demo.gif)
+
 ## How can I configure it?
 
 ### Changing the file age timer
@@ -25,8 +29,12 @@ For waiting until the accepted time to wait before renaming & moving the file is
 
 ## TODO 
 
-### No Second Directory
+### Make Second Directory Optional
 
 Code currently does not support a good and easy way to specify not using a second directory without making more than a few lines of correction. Future improves include writing logic to check on the existence of a second directory variable and if it's specified, and then running specific code to execute.
 
 And no, I am not good at naming repositories.
+
+### Refactor `newAnimeMovies.py`
+
+Change code to use classes similar to `newAnimeEpisodes.py`
