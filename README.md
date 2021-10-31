@@ -15,7 +15,7 @@ To download and use, you can clone this repo and run the task on demand, or on a
 
 ### Demo
 
-![anime-mover](https://raw.githubusercontent.com/joeypoyiwu/anime-video-file-renamer-and-mover/feat/refactor-newAnimeEpisodes/img/demo.gif)
+![anime-mover](https://imgur.com/a/jNJUfwH)
 
 ## How can I configure it?
 
