@@ -8,14 +8,14 @@ This repository hosts two scripts that are meant to be used for the purposes of 
 
 Both scripts do two things:
 
-1. Looks in a directory for files, and for each file the filename will be renamed via Regex, and then moved to a specified directory. You can also choose not to specify a directory by removing the variable `directory2` and rename files in bulk in one directory, but #2 will not apply.
+1. Looks in a directory for files, and for each file the filename will be parsed via Regex, and then moved to a specified directory. You can also choose not to specify a directory by removing the variable `directory2` and rename files in bulk in one directory, but #2 will not apply.
 2. When moving the file, the script will check to see the age of the file and if it's at least 10 minutes old. After it checks the file is more than 10 minutes old, it will then check if there exists a directory the specified directory (`directory2`). If it exists, the script will move the file over to the matching directory name as the filename. If a directory with the same title as the filename does not exist, the script will create a new directory in the specified directory (`directory2`), and move it there. 
 
 To download and use, you can clone this repo and run the task on demand, or on a cron job or task scheduler if you're on Windows.
 
 ### Demo
 
-![anime-mover](https://imgur.com/a/jNJUfwH)
+![anime-mover](https://i.imgur.com/3K9NSNs.gif)
 
 ## How can I configure it?
 
