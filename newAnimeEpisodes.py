@@ -24,6 +24,13 @@ def regex_decorator(function):
         return renamedFilename.group(1) # returns string matched by re
     return wrapper
 
+class getColoredText:
+    dir1Colored = colored(dir1, "green")
+    dir2Colored = colored(dir2, "green")
+    acceptedFileAgeColored = colored(f"{acceptedFileAge} minutes", "blue")
+    noDirColored = colored("NO DIRECTORY FOUND", "red")
+    abortColored = colored("ABORTING", "red", "on_grey")
+
 class parsedFilename:
     def __init__(self, fileName):
         self.name = fileName
@@ -57,39 +64,40 @@ class moveFile(object):
             print ('Missing parameters :(')
 
     def getDir(self):
-        newDir = dir2 + self.newName
-        dir2Colored = colored(dir2, "green")
-        self.acceptedFileAgeColored = colored(f"{acceptedFileAge} minutes", "blue")
-        self.newDirColored = colored(newDir, "green")
-        self.dir1Colored = colored(dir1, "green")
-        noDirColored = colored("NO DIRECTORY FOUND", "red")
-        abortColored = colored("ABORTING", "red", "on_grey")
+        self.newDir = dir2 + self.newName
+        self.newDirColored = colored(self.newDir, "green")
+        # dir2Colored = colored(dir2, "green")
+        # self.acceptedFileAgeColored = colored(f"{acceptedFileAge} minutes", "blue")
+        # self.newDirColored = colored(newDir, "green")
+        # self.dir1Colored = colored(dir1, "green")
+        # noDirColored = colored("NO DIRECTORY FOUND", "red")
+        # abortColored = colored("ABORTING", "red", "on_grey")
         #checks to see if the values of `isCorrectFile` and `delta` is greater than or equal to the value of `acceptInterval`
-        print(f'Checking file age information - currently set accepted file age is: {self.acceptedFileAgeColored}...')
+        print(f'Checking file age information - currently set accepted file age is: {getColoredText.acceptedFileAgeColored}...')
         if self.fileInfo:
             if self.fileInfo[2] and self.fileInfo[0] >= self.fileInfo[1]:
-                print (f"\nFile is older than {self.acceptedFileAgeColored}, checking for matching folder in second directory: {dir2Colored}")
+                print (f"\nFile is older than {getColoredText.acceptedFileAgeColored}, checking for matching folder in second directory: {getColoredText.dir2Colored}")
                 # if dir1 does not exist, a new one will be created with the name of the name of the file
-                if not os.path.exists(newDir):
-                    print (f"\n{noDirColored}: Creating new directory: {self.newDirColored}")
+                if not os.path.exists(self.newDir):
+                    print (f"\n{getColoredText.noDirColored}: Creating new directory: {self.newDirColored}")
                     # creates new directory with the new file name within dir2
-                    os.makedirs(newDir)
-                return newDir
+                    os.makedirs(self.newDir)
+                return self.newDir
             elif self.fileInfo [2] and self.fileInfo[0] < self.fileInfo[1]:
-                print ("\nFile is not old enough - " + abortColored)
+                print ("\nFile is not old enough - " + getColoredText.abortColored)
                 exit() # probably not the best way to exit, but works for now.
         elif self.fileInfo == None:
-            print (f"\nWill not be checking file age - checking for matching folder in second directory in: {dir2Colored}")
-            if not os.path.exists(newDir):
-                print (f"\n{noDirColored}: Creating new directory: {self.newDirColored}")
+            print (f"\nWill not be checking file age - checking for matching folder in second directory in: {getColoredText.dir2Colored}")
+            if not os.path.exists(self.newDir):
+                print (f"\n{getColoredText.noDirColored}: Creating new directory: {self.newDirColored}")
                 # creates new directory with the new file name within dir2
-                os.makedirs(newDir)
-            return newDir
+                os.makedirs(self.newDir)
+            return self.newDir
 
     def moveToDir(self):
         newDir = self.getDir()
         originalNameColored = colored(self.originalName, "green")
-        print (f"\n>> Found match - moving file: {originalNameColored} \n\n>> From directory: {self.dir1Colored} \n\n>> To target directory: {self.newDirColored}")
+        print (f"\n>> Found match - moving file: {originalNameColored} \n\n>> From directory: {getColoredText.dir1Colored} \n\n>> To target directory: {self.newDirColored}")
         print('―' * 100)  # U+2015, Horizontal Bar
         os.chdir(dir2)
         shutil.move(dir1 + self.originalName, newDir + "/" + self.originalName)
