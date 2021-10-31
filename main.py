@@ -1,4 +1,3 @@
-from os import rename
 from newAnimeEpisodes import *
 import click
 
