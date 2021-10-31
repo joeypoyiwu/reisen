@@ -66,13 +66,6 @@ class moveFile(object):
     def getDir(self):
         self.newDir = dir2 + self.newName
         self.newDirColored = colored(self.newDir, "green")
-        # dir2Colored = colored(dir2, "green")
-        # self.acceptedFileAgeColored = colored(f"{acceptedFileAge} minutes", "blue")
-        # self.newDirColored = colored(newDir, "green")
-        # self.dir1Colored = colored(dir1, "green")
-        # noDirColored = colored("NO DIRECTORY FOUND", "red")
-        # abortColored = colored("ABORTING", "red", "on_grey")
-        #checks to see if the values of `isCorrectFile` and `delta` is greater than or equal to the value of `acceptInterval`
         print(f'Checking file age information - currently set accepted file age is: {getColoredText.acceptedFileAgeColored}...')
         if self.fileInfo:
             if self.fileInfo[2] and self.fileInfo[0] >= self.fileInfo[1]:
