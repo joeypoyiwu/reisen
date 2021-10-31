@@ -8,8 +8,8 @@ This repository hosts two scripts that are meant to be used for the purposes of 
 
 Both scripts do two things:
 
-1. Looks in a directory for files, and for each file the filename will be parsed via Regex, and then moved to a specified directory. You can also choose not to specify a directory by removing the variable `directory2` and rename files in bulk in one directory, but #2 will not apply.
-2. When moving the file, the script will check to see the age of the file and if it's at least 10 minutes old. After it checks the file is more than 10 minutes old, it will then check if there exists a directory the specified directory (`directory2`). If it exists, the script will move the file over to the matching directory name as the filename. If a directory with the same title as the filename does not exist, the script will create a new directory in the specified directory (`directory2`), and move it there. 
+1. Looks in a directory for files, and for each file the filename will be parsed via Regex, and then moved to a specified directory. You can also choose not to specify a directory by removing the variable `TARGETDIR` and rename files in bulk in one directory, but #2 will not apply.
+2. When moving the file, the script will check to see the age of the file and if it's at least 10 minutes old. After it checks the file is more than 10 minutes old, it will then check if there exists a directory the specified directory (`TARGETDIR`). If it exists, the script will move the file over to the matching directory name as the filename. If a directory with the same title as the filename does not exist, the script will create a new directory in the specified directory (`TARGETDIR`), and move it there. 
 
 To download and use, you can clone this repo and run the task on demand, or on a cron job or task scheduler if you're on Windows.
 
@@ -19,13 +19,15 @@ To download and use, you can clone this repo and run the task on demand, or on a
 
 ## How can I configure it?
 
+Change the name of the `.env_template` file to `.env`, and fill out desired parameters.
+
 ### Changing the file age timer
 
-You can change the variable `fileAge` to any integer of your choosing in minutes like such:
+You can change the variable `SET_MINUTES` in the `.env_template` file to any integer of your choosing in minutes.
 
-For waiting until the accepted time to wait before renaming & moving the file is 30 minutes long, change `fileAge` to:
+For example - to set the accepted time to wait before parsing & moving the file is 30 minutes long, change `SET_MINUTES` to:
 
-`fileAge = 30`
+`SET_MINUTES = 30`
 
 ## TODO 
 
@@ -33,8 +35,24 @@ For waiting until the accepted time to wait before renaming & moving the file is
 
 Code currently does not support a good and easy way to specify not using a second directory without making more than a few lines of correction. Future improves include writing logic to check on the existence of a second directory variable and if it's specified, and then running specific code to execute.
 
-And no, I am not good at naming repositories.
-
 ### Refactor `newAnimeMovies.py`
 
 Change code to use classes similar to `newAnimeEpisodes.py`
+
+### Refactor `colorText` class
+
+I'm pretty sure this can be done way better than the way I have this written and implemented.
+
+### Add tests
+
+Write stub tests to assert output
+
+### Add automated CI/CD
+
+Plan is to use Jenkins
+
+### Add logic to output message if no files are in directories
+
+Currently there is nothing in place to notify the user in the case that there is nothing in the directory
+
+And no, I am not good at naming repositories.
