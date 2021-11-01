@@ -7,20 +7,23 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name='reisen',
-    version='0.1.2',
+    version='0.2.0',
     author='Joey Wu',
     author_email='joeywu99@gmail.com',
-    short_description='CLI tool to parse & move media files in a folder to another folder',
+    license = 'MIT',
+    description='CLI tool to parse & move media files in a folder to another folder',
     url='https://github.com/joeypoyiwu/anime-video-file-renamer-and-mover',
-    py_modules=['main'],
+    py_modules=['reisen', 'app'],
     packages=find_packages(),
-    install_requires=[
-        requirements
+    install_requires=[requirements],
+    python_requires='>=3.6',
+    classifiers=[
+        "Programming Language :: Python :: 3.9",
+        "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
     entry_points={
         'console_scripts': [
-            'reisen = reisen:main',
+            'reisen = reisen:cli',
         ],
     },
 )

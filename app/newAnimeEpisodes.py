@@ -2,15 +2,7 @@ import os
 import re
 import shutil
 import datetime
-from dotenv import load_dotenv
 from termcolor import colored
-
-# load .env file
-load_dotenv()
-
-dir1 = os.getenv('BASE_DIR')
-dir2 = os.getenv('TARGET_DIR')
-acceptedFileAge = int(os.getenv('SET_MINUTES'))
 
 #reusable regex parser for other potential functions
 def regex_decorator(function):
@@ -44,55 +36,58 @@ class parsedFilename:
         return str(self.name)
 
 class checkAge(object):
-    def __init__(self, originalFileName):
+    def __init__(self, originalFileName, setMinutes, baseDir):
         self.name = originalFileName
+        self.setMinutes = setMinutes
+        self.baseDir = baseDir + "/"
 
     def check(self):
-        fileAge = datetime.datetime.fromtimestamp(os.path.getmtime(dir1 + self.name))
+        fileAge = datetime.datetime.fromtimestamp(os.path.getmtime(self.baseDir + self.name))
         now = datetime.datetime.now()   
-        delta = str(now - fileAge)
-        acceptInterval = str(datetime.timedelta(minutes=acceptedFileAge))
+        delta = now - fileAge
+        acceptInterval = datetime.timedelta(minutes=self.setMinutes)
         isCorrectFile = re.search(r'.([mkv|avi|mp4])', self.name)
         fileInfo = [delta, acceptInterval, isCorrectFile]
         return fileInfo
 
 class moveFile(object):
 
-    def __init__(self, newFileName, originalFileName, fileInfo=None):
+    def __init__(self, newFileName, originalFileName, baseDir, targetDir, fileInfo=None):
         try:
             self.newName = newFileName
             self.originalName = originalFileName
+            self.targetDir = targetDir + "/"
+            self.baseDir = baseDir + "/"
             self.fileInfo = fileInfo
         except TypeError:
             print ('Missing parameters :(')
 
     def getDir(self):
-        self.newDir = dir2 + self.newName
-        # self.newDirColored = colored(self.newDir, "green")
-        print(f'Checking file age information - currently set accepted file age is: {colorText(acceptedFileAge)[1]}...')
-        if self.fileInfo:
+        self.newDir = self.targetDir + self.newName + "/"
+        if self.fileInfo is not None:
+            print(f'Checking file age information - currently set accepted file age is: {colorText(self.fileInfo[1])[1]} minutes')
             if self.fileInfo[2] and self.fileInfo[0] >= self.fileInfo[1]:
-                print (f"\nFile {colorText(self.originalName)[0]} is older than {colorText(acceptedFileAge)[1]} minutes. \n\nChecking for matching folder in second directory: {colorText(dir2)[1]}")
+                print (f"\nFile {colorText(self.originalName)[0]} is older than {colorText(self.fileInfo[1])[1]} minutes. \n\nChecking for matching folder in second directory: {colorText(self.targetDir)[1]}")
                 # if dir1 does not exist, a new one will be created with the name of the name of the file
                 if not os.path.exists(self.newDir):
-                    print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[1]}")
+                    print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[1]}/")
                     # creates new directory with the new file name within dir2
-                    os.makedirs(self.newDir)
+                    os.makedirs(self.newDir + "/")
                 return self.newDir
             elif self.fileInfo [2] and self.fileInfo[0] < self.fileInfo[1]:
                 print ("\nFile is not old enough - " + colorText('ABORTING')[2])
                 exit() # probably not the best way to exit, but works for now.
         elif self.fileInfo == None:
-            print (f"\nWill not be checking file age - checking for matching folder in second directory in: {colorText(dir2)[1]}")
+            print (f"\nWill not be checking file age - checking for matching folder in second directory in: {colorText(self.targetDir)[1]}")
             if not os.path.exists(self.newDir):
                 print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[0]}")
                 # creates new directory with the new file name within dir2
-                os.makedirs(self.newDir)
+                os.makedirs(self.newDir + "/")
             return self.newDir
 
     def moveToDir(self):
-        newDir = self.getDir()
-        print (f"\n>> Found match - moving file: {colorText(self.originalName)[0]} \n\n>> From directory: {colorText(dir1)[0]} \n\n>> To target directory: {colorText(self.newDir)[0]}")
+        newDir = self.getDir() + "/"
+        print (f"\n>> Found match - moving file: {colorText(self.originalName)[0]} \n\n>> From directory: {colorText(self.baseDir)[0]} \n\n>> To target directory: {colorText(self.newDir)[0]}")
         print('―' * 100)  # U+2015, Horizontal Bar
-        os.chdir(dir2)
-        shutil.move(dir1 + self.originalName, newDir + "/" + self.originalName)
+        os.chdir(self.targetDir + "/")
+        shutil.move(self.baseDir + self.originalName, newDir + self.originalName)
