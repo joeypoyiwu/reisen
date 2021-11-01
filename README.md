@@ -1,4 +1,4 @@
-# anime-video-file-rename-and-mover
+# Reisen-CLI
 
 This repository hosts two scripts that are meant to be used for the purposes of organizing video files in the format of:
 
@@ -37,7 +37,7 @@ Code currently does not support a good and easy way to specify not using a secon
 
 ### Refactor `newAnimeMovies.py`
 
-Change code to use classes similar to `newAnimeEpisodes.py`
+Change code to use classes similar to `newAnimeEpisodes.py`. Or remove it altogether - it's currently not being used at all.
 
 ### Refactor `colorText` class
 
@@ -54,5 +54,3 @@ Plan is to use Jenkins
 ### Add logic to output message if no files are in directories
 
 Currently there is nothing in place to notify the user in the case that there is nothing in the directory
-
-And no, I am not good at naming repositories.
