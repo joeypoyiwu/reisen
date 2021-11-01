@@ -5,7 +5,6 @@ colorama==0.4.4
 docopt==0.6.2
 idna==3.3
 python-dotenv==0.19.1
--e git+ssh://git@github.com/joeypoyiwu/media-file-mover.git@96211df8e23e6b240e5505e86c4c4d06d82e172e#egg=reisen
 requests==2.26.0
 termcolor==1.1.0
 urllib3==1.26.7

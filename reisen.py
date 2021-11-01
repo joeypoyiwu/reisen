@@ -1,4 +1,4 @@
-from newAnimeEpisodes import *
+from app.newAnimeEpisodes import *
 import click
 
 os.chdir(dir1)
@@ -9,7 +9,14 @@ initialDir = os.listdir(dir1)
 @click.option('--age', default=False, is_flag=True, required=False, help='Checks file age and compares it to a specified accepted time interval set by `acceptedFileAge`')
 @click.option('--move', default=False, is_flag=True, required=True, help='Moves the file in a directory to another directory that is specified.')
 
-def organizeFiles(parse, age, move):
+def main(parse, age, move):
+    logo = """
+    +-----------------------------+
+    |      Welcome to Reisen      |
+    +-----------------------------+
+    """
+    click.echo(logo)
+
     for originalFileName in initialDir:
         if parse and age and move: 
             newFileName = parsedFilename(str(originalFileName)).parse()
@@ -26,4 +33,4 @@ def organizeFiles(parse, age, move):
             return
 
 if __name__ == '__main__':
-    organizeFiles()
+    main()
