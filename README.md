@@ -31,7 +31,7 @@ Both scripts do two things:
 2. When moving the file, the script will check to see the age of the file and if it's at least 10 minutes old. After it checks the file is more than 10 minutes old, it will then check if there exists a directory the specified directory (`destination`). If it exists, the script will move the file over to the matching directory name as the filename. If a directory with the same title as the filename does not exist, the script will create a new directory in the specified directory (`destination`), and move it there. 
 
 To download and use, you can install it via:
-`pip install reisen`
+`pip install --extra-index-url https://test.pypi.org/simple/ reisen`
 
 ### Demo
 
@@ -49,7 +49,7 @@ Run `reisen -h` or `reisen --help` to get started.
 
 `reisen organize` will also require at least both options `--parse` and `--move`. The option `--age` is option.
 
-### `reisen genrate`
+### `reisen generate`
 
 `reisen generate` will generate an executable file via `pyinstaller` that can be run as a regular executable.
 
