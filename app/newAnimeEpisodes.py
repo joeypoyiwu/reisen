@@ -36,13 +36,13 @@ class parsedFilename:
         return str(self.name)
 
 class checkAge(object):
-    def __init__(self, originalFileName, setMinutes, baseDir):
+    def __init__(self, originalFileName, setMinutes, source):
         self.name = originalFileName
         self.setMinutes = setMinutes
-        self.baseDir = baseDir + "/"
+        self.source = source + "/"
 
     def check(self):
-        fileAge = datetime.datetime.fromtimestamp(os.path.getmtime(self.baseDir + self.name))
+        fileAge = datetime.datetime.fromtimestamp(os.path.getmtime(self.source + self.name))
         now = datetime.datetime.now()   
         delta = now - fileAge
         acceptInterval = datetime.timedelta(minutes=self.setMinutes)
@@ -52,22 +52,22 @@ class checkAge(object):
 
 class moveFile(object):
 
-    def __init__(self, newFileName, originalFileName, baseDir, targetDir, fileInfo=None):
+    def __init__(self, newFileName, originalFileName, source, destination, fileInfo=None):
         try:
             self.newName = newFileName
             self.originalName = originalFileName
-            self.targetDir = targetDir + "/"
-            self.baseDir = baseDir + "/"
+            self.destination = destination + "/"
+            self.source = source + "/"
             self.fileInfo = fileInfo
         except TypeError:
             print ('Missing parameters :(')
 
     def getDir(self):
-        self.newDir = self.targetDir + self.newName + "/"
+        self.newDir = self.destination + self.newName + "/"
         if self.fileInfo is not None:
-            print(f'Checking file age information - currently set accepted file age is: {colorText(self.fileInfo[1])[1]} minutes')
+            print(f'\nChecking file age information - currently set accepted file age is: {colorText(self.fileInfo[1])[1]} minutes')
             if self.fileInfo[2] and self.fileInfo[0] >= self.fileInfo[1]:
-                print (f"\nFile {colorText(self.originalName)[0]} is older than {colorText(self.fileInfo[1])[1]} minutes. \n\nChecking for matching folder in second directory: {colorText(self.targetDir)[1]}")
+                print (f"\nFile {colorText(self.originalName)[0]} is older than {colorText(self.fileInfo[1])[1]} minutes. \n\nChecking for matching folder in second directory: {colorText(self.destination)[1]}")
                 # if dir1 does not exist, a new one will be created with the name of the name of the file
                 if not os.path.exists(self.newDir):
                     print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[1]}/")
@@ -78,7 +78,7 @@ class moveFile(object):
                 print ("\nFile is not old enough - " + colorText('ABORTING')[2])
                 exit() # probably not the best way to exit, but works for now.
         elif self.fileInfo == None:
-            print (f"\nWill not be checking file age - checking for matching folder in second directory in: {colorText(self.targetDir)[1]}")
+            print (f"\nWill not be checking file age - checking for matching folder in second directory in: {colorText(self.destination)[1]}")
             if not os.path.exists(self.newDir):
                 print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[0]}")
                 # creates new directory with the new file name within dir2
@@ -86,8 +86,9 @@ class moveFile(object):
             return self.newDir
 
     def moveToDir(self):
+        print(self.destination)
         newDir = self.getDir() + "/"
-        print (f"\n>> Found match - moving file: {colorText(self.originalName)[0]} \n\n>> From directory: {colorText(self.baseDir)[0]} \n\n>> To target directory: {colorText(self.newDir)[0]}")
+        print (f"\n>> Found match - moving file: {colorText(self.originalName)[0]} \n\n>> From directory: {colorText(self.source)[0]} \n\n>> To target directory: {colorText(self.newDir)[0]}")
         print('―' * 100)  # U+2015, Horizontal Bar
-        os.chdir(self.targetDir + "/")
-        shutil.move(self.baseDir + self.originalName, newDir + self.originalName)
+        os.chdir(self.destination + "/")
+        shutil.move(self.source + self.originalName, newDir + self.originalName)
