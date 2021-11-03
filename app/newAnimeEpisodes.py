@@ -4,15 +4,39 @@ import shutil
 import datetime
 from termcolor import colored
 
+#I'm no regex expert, so to double check, you can use regex101.com
+class regexPatterns:
+    removeBrackets = r'\[(.*?)\]' # removes brackets and its contents
+    removeParantheses = r'([\(\[][\d\-\w\s~]*[\)\]])' # removes parantheses and its contents
+    removeFileExtensions = r'\.[avi|mkv|mp4]*' # removes file extensions matching the ones given
+    removeDash = r'( - [\w\d]*\Z)' # removes dashes and any text following it
+    removeDigitsTrailingDash = r'( - [\w\d]{1,3})' # same thing as removeDash, but with a quantifier
+    removeRemainingDashes = r'-$' # removes any dashes remaining
+    removeUnicodeDashes = r'([\u2010-\uFF0D] [\d]*)' # removes any funky dashes that are encoded differently
+    removeEpWithDigits = r'[eE][pP]\d{1,2}' # removes any string that are eP/Ep/ep/EP and any numbers following
+    removeEp = r'\d{1,3}$' # removes episode number
+    removeWhitespace = r'[ \t]+$' # removes white spaces at the end of the line just in case
+    removeWeirdFormatting = r' \S+(?=\((.*?)\)$)\((.*?)\)$' # don't really have a better name for this - removes weird paranthese formatting
+    matchFile = r'([\w\W]*)' # will use re.match and get new file name
+
 #reusable regex parser for other potential functions
 def regex_decorator(function):
     def wrapper(arg1):
         func = function(arg1) # pass in string as argument
         fileNameReplaceWithSpace = func.replace("_", " ")
-        removeBrackets = re.sub(r'([\(\[][\d\-\w\s~]*[\)\]])', '', fileNameReplaceWithSpace)
-        removeFileExtension = re.sub(r'\.[avi|mkv|mp4]*', '', removeBrackets).strip()
-        removeDashAndFollowingText = re.sub(r'( - [\w\d]*\Z)', "", removeFileExtension)
-        renamedFilename = re.match(r'([\w\W]*)', removeDashAndFollowingText)
+        removeBrackets = re.sub(regexPatterns.removeBrackets, '', fileNameReplaceWithSpace)
+        removeParantheses = re.sub(regexPatterns.removeParantheses, '', removeBrackets)
+        removeFileExtension = re.sub(regexPatterns.removeFileExtensions, '', removeParantheses).strip()
+        removeDash = re.sub(regexPatterns.removeDash, '', removeFileExtension)
+        removeDigitsTrailingDash = re.sub(regexPatterns.removeDigitsTrailingDash, '', removeDash)
+        removeRemainingDashes = re.sub(regexPatterns.removeRemainingDashes, '', removeDigitsTrailingDash)
+        removeUnicodeDashes = re.sub(regexPatterns.removeUnicodeDashes, '', removeRemainingDashes)
+        removeEpWithDigits = re.sub(regexPatterns.removeEpWithDigits, '', removeUnicodeDashes)
+        removeEp = re.sub(regexPatterns.removeEp, '', removeEpWithDigits)
+        removeWhitespace = re.sub(regexPatterns.removeWhitespace, '', removeEp)
+        removesWeirdFormatting = re.sub(regexPatterns.removeWeirdFormatting, '', removeWhitespace)
+        removeAsciiFuckery = removesWeirdFormatting.encode("ascii", "ignore").decode("utf-8")
+        renamedFilename = re.match(regexPatterns.matchFile, removeAsciiFuckery)
         return renamedFilename.group(1) # returns string matched by re
     return wrapper
 
@@ -86,7 +110,6 @@ class moveFile(object):
             return self.newDir
 
     def moveToDir(self):
-        print(self.destination)
         newDir = self.getDir() + "/"
         print (f"\n>> Found match - moving file: {colorText(self.originalName)[0]} \n\n>> From directory: {colorText(self.source)[0]} \n\n>> To target directory: {colorText(self.newDir)[0]}")
         print('―' * 100)  # U+2015, Horizontal Bar
