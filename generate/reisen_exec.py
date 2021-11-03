@@ -11,22 +11,39 @@ config.read(configPath)
 dir1 = config['DIRECTORIES']['BASE_DIR']
 dir2 = config['DIRECTORIES']['TARGET_DIR']
 
-# dir1 = 'D:\Users\Joey\Documents\Temp\videos\\'
-# dir2 = 'D:\Users\Joey\Documents\Temp\newvideos\\'
+class regexPatterns:
+    removeBrackets = r'\[(.*?)\]' # removes brackets and its contents
+    removeParantheses = r'([\(\[][\d\-\w\s~]*[\)\]])' # removes parantheses and its contents
+    removeFileExtensions = r'\.[avi|mkv|mp4]*' # removes file extensions matching the ones given
+    removeDash = r'( - [\w\d]*\Z)' # removes dashes and any text following it
+    removeDigitsTrailingDash = r'( - [\w\d]{1,3})' # same thing as removeDash, but with a quantifier
+    removeRemainingDashes = r'-$' # removes any dashes remaining
+    removeUnicodeDashes = r'([\u2010-\uFF0D] [\d]*)' # removes any funky dashes that are encoded differently
+    removeEpWithDigits = r'[eE][pP]\d{1,2}' # removes any string that are eP/Ep/ep/EP and any numbers following
+    removeEp = r'\d{1,3}$' # removes episode number
+    removeWhitespace = r'[ \t]+$' # removes white spaces at the end of the line just in case
+    removeWeirdFormatting = r' \S+(?=\((.*?)\)$)\((.*?)\)$' # don't really have a better name for this - removes weird paranthese formatting
+    matchFile = r'([\w\W]*)' # will use re.match and get new file name
 
 os.chdir(dir1)
 
 arr = os.listdir(dir1)
 
 for fname in arr:
-    print (fname)
     rname = fname.replace("_", " ")
-    rname = re.sub(r'([\(\[][\d\-\w\s~]*[\)\]])', '', rname)
-    rname = re.sub(r'\.[avi|mkv|mp4]*', '', rname).strip()
-    rname = re.sub(r'( - [\w\d]*\Z)', "", rname)
-    print (rname)
-    matchedGroup = re.match(r'([\w\W]*)', rname)
-    print (matchedGroup.group(1))
+    removeBrackets = re.sub(regexPatterns.removeBrackets, '', rname)
+    removeParantheses = re.sub(regexPatterns.removeParantheses, '', removeBrackets)
+    removeFileExtension = re.sub(regexPatterns.removeFileExtensions, '', removeParantheses).strip()
+    removeDash = re.sub(regexPatterns.removeDash, '', removeFileExtension)
+    removeDigitsTrailingDash = re.sub(regexPatterns.removeDigitsTrailingDash, '', removeDash)
+    removeRemainingDashes = re.sub(regexPatterns.removeRemainingDashes, '', removeDigitsTrailingDash)
+    removeUnicodeDashes = re.sub(regexPatterns.removeUnicodeDashes, '', removeRemainingDashes)
+    removeEpWithDigits = re.sub(regexPatterns.removeEpWithDigits, '', removeUnicodeDashes)
+    removeEp = re.sub(regexPatterns.removeEp, '', removeEpWithDigits)
+    removeWhitespace = re.sub(regexPatterns.removeWhitespace, '', removeEp)
+    removesWeirdFormatting = re.sub(regexPatterns.removeWeirdFormatting, '', removeWhitespace)
+    removeAsciiFuckery = removesWeirdFormatting.encode("ascii", "ignore").decode("utf-8")
+    matchedGroup = re.match(regexPatterns.matchFile, removeAsciiFuckery)
     fileAge = datetime.datetime.fromtimestamp(os.path.getmtime(dir1 + fname))
     now = datetime.datetime.now()
     delta = now - fileAge
