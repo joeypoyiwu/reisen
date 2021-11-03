@@ -6,8 +6,8 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
     requirements = fh.read()
 
 setup(
-    name='reisen',
-    version='0.2.0',
+    name='Reisen',
+    version='0.3.5',
     author='Joey Wu',
     author_email='joeywu99@gmail.com',
     license = 'MIT',
