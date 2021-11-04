@@ -56,7 +56,7 @@ def generate(source, destination, exe):
             if OS == 'Windows':
                 subprocess.call(r'pyinstaller --onefile --add-data "config.ini;." reisen_exec.py')
             elif OS == 'Darwin':
-                subprocess.call(r'pyinstaller --onefile --add-data "config.ini:." reisen_exec.py')
+                subprocess.call('pyinstaller --onefile --add-data "config.ini:." reisen_exec.py', shell=True)
             click.echo(colorText('\nSUCCESS! ')[0] + f'\n\nSingle file executable built and completed. You can find the executable file here:')
             click.echo(colorText(f'\n{execPath}\n')[1])
         else:
