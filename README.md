@@ -7,13 +7,23 @@ This repository hosts two scripts that are meant to be used for the purposes of 
 It is currently not parsing other patterns explicitly, although there are plans to implement them. Some examples of patterns that don't work create the right directory name are:
 
 ```
-[Mezashite] Aikatsu! ‒ 101 [6936887B].mkv
-Darker_Than_Black_Ep14_[720p,BluRay,x264]_-_THORA.mkv
+[Kira-Fansub]Bokurano_04_(DVD_x264_848x480_24fps_AAC) [4E938D1E].mkv
+Clannad_Ep07_[1080p,BluRay,x264]_-_THORA_SS-Eclipse.mkv
+Darker_Than_Black_Ep05_[720p,BluRay,x264]_-_THORA.mkv
+Fate_Stay_Night_Ep05_The_Two_Magi_Part1_[720p,BluRay,x264]_-_THORA.mkv
+[Tormaid]_Full_Metal_Panic_FUMOFFU_02_(Blu-Ray_960x720_Dual_Audio_FLAC).mkv
+[RUELL-Raws] GUNDAM SEED HDR. EP34 (BD 1920x1080 x264 DualFLAC+ENGSub).mkv
+[Coalgirls]_Ga-Rei_Zero_08_(1280x720_Blu-Ray_FLAC)_[8AA522B5].mkv
+Genesis_of_Aquarion_-_14_[3xR][Blu-ray.720p.H264.FLAC.AC3]_[8B55E3F6].mkv
 [Hiryuu] Maji de Watashi ni Koi Shinasai!! 05 [Hi10P 1280x720 H264] [6AC9A59E].mkv
-[ANBU-Frostii]_Tokyo_Magnitude_8_-_01_-_[720p][E5C69941].mkv
-[B-G_&_w.0.0.f]_Shigofumi_01.DVD(H.264_DD2.0)_[E6F70A9A].mkv
-[Scum] Nanatsu no Bitoku - 03 [WEB+TV][2610F90B].mkv
+[Coalgirls]_Toradora_12_(1280x720_H.264_AAC)_[AF2F719F].mkv
+aria_the_animation_06[h264.vorbis][niizk].mkv
+onegai_teacher_05[h264.vorbis][niizk].mkv
 ```
+
+The majority of these formats are for older episodes and series - newer series typically follow a very standard format noted above:
+
+`[FansubGroup] Anime Title/Movie - 00 (1080p) [123ABC].mkv/avi/mp4`
 
 ## What is the purpose of this?
 
@@ -31,11 +41,11 @@ Both scripts do two things:
 2. When moving the file, the script will check to see the age of the file and if it's at least 10 minutes old. After it checks the file is more than 10 minutes old, it will then check if there exists a directory the specified directory (`destination`). If it exists, the script will move the file over to the matching directory name as the filename. If a directory with the same title as the filename does not exist, the script will create a new directory in the specified directory (`destination`), and move it there. 
 
 To download and use, you can install it via:
-`pip install --extra-index-url https://test.pypi.org/simple/ reisen`
+`pip install reisen`
 
 ### Demo
 
-![anime-mover](https://i.imgur.com/3K9NSNs.gif)
+![anime-mover](https://i.imgur.com/8tcTbxw.gif)
 
 ## How do I run it??
 
