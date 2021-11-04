@@ -81,7 +81,7 @@ class moveFile(object):
             self.newName = newFileName
             self.originalName = originalFileName
             self.destination = destination + "/"
-            self.source = source + "/"
+            self.source = source
             self.fileInfo = fileInfo
         except TypeError:
             print ('Missing parameters :(')
@@ -94,7 +94,7 @@ class moveFile(object):
                 print (f"\nFile {colorText(self.originalName)[0]} is older than {colorText(self.fileInfo[1])[1]} minutes. \n\nChecking for matching folder in second directory: {colorText(self.destination)[1]}")
                 # if dir1 does not exist, a new one will be created with the name of the name of the file
                 if not os.path.exists(self.newDir):
-                    print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[1]}/")
+                    print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[1]}")
                     # creates new directory with the new file name within dir2
                     os.makedirs(self.newDir + "/")
                 return self.newDir
