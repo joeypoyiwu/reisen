@@ -1,3 +1,4 @@
+from os import path
 import click
 from glob import glob
 from pathlib import Path
@@ -33,14 +34,20 @@ def organize(source, destination, parse, age, move):
             for dir in initialDirGlob:
                 filePath = os.listdir(dir)
                 for originalFileName in filePath:
-                    if originalFileName.endswith( types ):
+                    if os.path.isdir(source + '/' + originalFileName)==False and not originalFileName.endswith( types ):
+                        click.echo(colorText(f'\nERROR: ')[2] + f'Found file that does not end in file types: ')
+                        click.echo(colorText(f'{types}')[1] + '\n')
+                        click.echo(f'Skipping file: ' + colorText(f'{originalFileName}')[1] + '\n')
+                        click.echo('―' * 100)  # U+2015, Horizontal Bar
+                    elif originalFileName.endswith( types ):
                         newFileName = parsedFilename(str(originalFileName)).parse()
                         fileInfo = checkAge(originalFileName, setMinutes, dir).check()
                         runFileActions = moveFile(str(newFileName), str(originalFileName), dir, destination, fileInfo)
                         runFileActions.moveToDir()
-                    elif len(os.listdir(source + '/' + originalFileName)) == 0:
+                    elif os.path.isdir(source + '/' + originalFileName)==True and len(os.listdir(source + '/' + originalFileName)) == 0:
                         click.echo(colorText(f'\nWARNING: ')[2] + f'Found objects that are not video files or empty directories in: ')
                         click.echo(colorText(f'\n{source}\n')[0])
+                        click.echo(f'Files or folders in question: ' + colorText(source + '/' + originalFileName)[1] + '\n      ')
                         click.echo("Please double check your specified base directory and remove any files and/or empty directories that are not video files that match: ")
                         click.echo(colorText(f'{types}')[1] + '\n')
                         click.echo('―' * 100)  # U+2015, Horizontal Bar
@@ -51,12 +58,17 @@ def organize(source, destination, parse, age, move):
             for dir in initialDirGlob:
                 filePath = os.listdir(dir)
                 for originalFileName in filePath:
-                    if originalFileName.endswith( types ):
-                        fileInfo = None
+                    fileInfo = None
+                    if os.path.isdir(source + '/' + originalFileName)==False and not originalFileName.endswith( types ):
+                        click.echo(colorText(f'\nERROR: ')[2] + f'Found file that does not end in file types: ')
+                        click.echo(colorText(f'{types}')[1] + '\n')
+                        click.echo(f'Skipping file: ' + colorText(f'{originalFileName}')[1] + '\n')
+                        click.echo('―' * 100)  # U+2015, Horizontal Bar
+                    elif originalFileName.endswith( types ):
                         newFileName = parsedFilename(str(originalFileName)).parse()
                         runFileActions = moveFile(str(newFileName), str(originalFileName), dir, destination, fileInfo)
                         runFileActions.moveToDir()
-                    elif len(os.listdir(str(source) + '/' + originalFileName)) == 0:
+                    elif os.path.isdir(source + '/' + originalFileName)==True and len(os.listdir(source + '/' + originalFileName)) == 0:
                         click.echo(colorText(f'\nWARNING: ')[2] + f'Found objects that are not video files or empty directories in: ')
                         click.echo(colorText(f'\n{source}\n')[0])
                         click.echo("Please double check your specified base directory and remove any files and/or empty directories that are not video files that match: ")
