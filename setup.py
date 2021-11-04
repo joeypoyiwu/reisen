@@ -7,7 +7,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name='Reisen',
-    version='0.3.5',
+    version='0.3.6',
     author='Joey Wu',
     author_email='joeywu99@gmail.com',
     license = 'MIT',
