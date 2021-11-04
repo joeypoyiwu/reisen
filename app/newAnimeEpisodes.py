@@ -96,7 +96,7 @@ class moveFile(object):
                 if not os.path.exists(self.newDir):
                     print (f"\n{colorText('NO DIRECTORY FOUND')[2]}: Creating new directory: {colorText(self.newDir)[1]}")
                     # creates new directory with the new file name within dir2
-                    os.makedirs(self.newDir + "/")
+                    os.makedirs(self.newDir)
                 return self.newDir
             elif self.fileInfo [2] and self.fileInfo[0] < self.fileInfo[1]:
                 print ("\nFile is not old enough - " + colorText('ABORTING')[2])

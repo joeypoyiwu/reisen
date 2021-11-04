@@ -38,7 +38,9 @@ I have my Plex server listening on directory B for metadata purposes. This autom
 Both scripts do two things:
 
 1. Looks in a directory for files, and for each file the filename will be parsed via Regex, and then moved to a specified directory. You can also choose not to specify a directory by removing the variable `destination` and rename files in bulk in one directory, but #2 will not apply.
-2. When moving the file, the script will check to see the age of the file and if it's at least 10 minutes old. After it checks the file is more than 10 minutes old, it will then check if there exists a directory the specified directory (`destination`). If it exists, the script will move the file over to the matching directory name as the filename. If a directory with the same title as the filename does not exist, the script will create a new directory in the specified directory (`destination`), and move it there. 
+2. When moving the file, the script will check to see the age of the file and if it's at least 10 minutes old. After it checks the file is more than 10 minutes old, it will then check if there exists a directory the specified directory (`destination`). If it exists, the script will move the file over to the matching directory name as the filename. If a directory with the same title as the filename does not exist, the script will create a new directory in the specified directory (`destination`), and move it there.
+
+It will also skip over any files that don't explicitly end with the file formats `.avi`, `.mkv`, or `.mp4`. Will be adding more media file formats to this list going forward.
 
 To download and use, you can install it via:
 `pip install reisen`
@@ -85,7 +87,7 @@ I'm pretty sure this can be done way better than the way I have this written and
 
 ### Add tests
 
-Write stub tests to assert output
+What good is this program if there are no tests to assert what is actually going to be happening? :^)
 
 ### Add automated CI/CD
 
@@ -94,3 +96,7 @@ Plan is to use Jenkins
 ### Add logic to output message if no files are in directories
 
 Currently there is nothing in place to notify the user in the case that there is nothing in the directory
+
+### Refactor code in commands.py
+
+Would be nice to move the logic in the commands.py files and build them out as classes under the `app` folder. Makes it easier to test and maintain. As it is now, it's not very intuitive to follow and read, but it does the job for now.
